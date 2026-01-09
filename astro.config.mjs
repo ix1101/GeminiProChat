@@ -1,22 +1,9 @@
 import { defineConfig } from 'astro/config'
 import unocss from 'unocss/astro'
 import solidJs from '@astrojs/solid-js'
-
-import node from '@astrojs/node'
+import cloudflare from '@astrojs/cloudflare' // 引入 Cloudflare 适配器
 import AstroPWA from '@vite-pwa/astro'
-import vercel from '@astrojs/vercel/edge'
-import netlify from '@astrojs/netlify/edge-functions'
-import disableBlocks from './plugins/disableBlocks'
 
-const envAdapter = () => {
-  switch (process.env.OUTPUT) {
-    case 'vercel': return vercel()
-    case 'netlify': return netlify()
-    default: return node({ mode: 'standalone' })
-  }
-}
-
-// https://astro.build/config
 export default defineConfig({
   integrations: [
     unocss(),
@@ -31,39 +18,16 @@ export default defineConfig({
         theme_color: '#212129',
         background_color: '#ffffff',
         icons: [
-          {
-            src: 'pwa-192.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: 'pwa-512.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
-          {
-            src: 'icon.svg',
-            sizes: '32x32',
-            type: 'image/svg',
-            purpose: 'any maskable',
-          },
+          { src: 'pwa-192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'pwa-512.png', sizes: '512x512', type: 'image/png' },
         ],
-      },
-      client: {
-        installPrompt: true,
-        periodicSyncForUpdates: 20,
-      },
-      devOptions: {
-        enabled: true,
       },
     }),
   ],
-  output: 'static',
-  adapter: envAdapter(),
-  vite: {
-    plugins: [
-      process.env.OUTPUT === 'vercel' && disableBlocks(),
-      process.env.OUTPUT === 'netlify' && disableBlocks(),
-    ],
-  },
+  output: 'server', // 必须改为 server 模式，登录和 API 才会生效
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: true,
+    },
+  }), // 明确指定使用 Cloudflare 适配器
 })
