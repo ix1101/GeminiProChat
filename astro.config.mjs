@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config'
 import unocss from 'unocss/astro'
 import solidJs from '@astrojs/solid-js'
-import cloudflare from '@astrojs/cloudflare' // 引入 Cloudflare 适配器
+import cloudflare from '@astrojs/cloudflare'
 import AstroPWA from '@vite-pwa/astro'
 
 export default defineConfig({
@@ -24,10 +24,10 @@ export default defineConfig({
       },
     }),
   ],
-  output: 'server', // 必须改为 server 模式，登录和 API 才会生效
+  output: 'server', 
   adapter: cloudflare({
     platformProxy: {
       enabled: true,
     },
-  }), // 明确指定使用 Cloudflare 适配器
+  }), 
 })
