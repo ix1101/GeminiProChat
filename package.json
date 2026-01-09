@@ -31,7 +31,8 @@
     "markdown-it-katex": "^2.0.3",
     "solid-js": "^1.8.0",
     "solidjs-use": "^2.1.0",
-    "undici": "^5.22.1"
+    "undici": "^5.22.1" ,
+    "@astrojs/cloudflare": "^12.1.0"
   },
   "devDependencies": {
     "@evan-yang/eslint-config": "^1.0.9",
